@@ -86,17 +86,23 @@ dialog input{width:100%;padding:11px;margin:7px 0;border:1px solid #ddd;border-r
 
 <script>
 const truyens = [
-  {ten:"Conan", theloai:"Trinh thám", anh:"https://images.ciatr.jp/2018/05/w_828/nt3bSfYQEsN1l6uND4K0boCkq8GlBbC527EgMy59.jpeg"},
-  {ten:"One Piece", theloai:"Phiêu lưu", anh:"https://mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png"},
-  {ten:"Dragon Ball", theloai:"Hành động", anh:"https://static.animecorner.me/2022/11/dragon-ball-volume-1.jpg"},
-  {ten:"Doraemon", theloai:"Hài hước", anh:"https://manga-mon.com/cdn/shop/files/Doraemon_29Front.jpg?v=1690035228"},
-  {ten:"Kimetsu no Yaiba", theloai:"Hành động", anh:"https://www.japanzon.com/31280-product_hd/kimetsu-no-yaiba-demon-slayer-vol1-jump-comics.jpg"},
-  {ten:"Jujutsu Kaisen", theloai:"Hành động", anh:"https://m.media-amazon.com/images/I/81jxwTCbzTL._SL1500_.jpg"},
-  {ten:"Monster", theloai:"Trinh thám", anh:"https://assets.lastdodo.com/image/ld_large/plain/assets/catalog/assets/2016/5/9/f/e/9/pdf_fe9df3e8-15de-11e6-8627-6d6a4a221e6c.jpg"},
-  {ten:"Attack on Titan", theloai:"Hành động", anh:"https://images-na.ssl-images-amazon.com/images/I/91%2BANRn6gKL.jpg"},
+  {ten:"Detective Conan", theloai:"Trinh thám", anh:"https://i.pinimg.com/736x/23/6b/8d/236b8d5ce29ea4e637dc3943bed3a28c.jpg"},
+  {ten:"One Piece", theloai:"Phiêu lưu", anh:"https://i.pinimg.com/736x/73/98/15/73981585bbead4a3aa37b934b346fc92.jpg"},
+  {ten:"Dragon Ball", theloai:"Hành động", anh:"https://i.pinimg.com/1200x/b4/0c/30/b40c30aaae4585c6a4ebbdc95e93465a.jpg"},
+  {ten:"Hunter X ", theloai:"Phiêu lưu", anh:"https://i.pinimg.com/1200x/d4/f0/1b/d4f01be158eb69460177ac77c18ed32b.jpg"},
+  {ten:"Kimetsu no Yaiba", theloai:"Hành động", anh:"https://i.pinimg.com/736x/71/c5/24/71c524fa316265d161a8a7753a232228.jpg"},
+  {ten:"Jujutsu Kaisen", theloai:"Hành động", anh:"https://i.pinimg.com/1200x/2a/1c/ea/2a1cea5bf5c0cb64d2a61a8f748cbf29.jpg"},
+  {ten:"Monster", theloai:"Trinh thám", anh:"https://i.pinimg.com/1200x/7d/96/d8/7d96d871d5369cc0eacca83d243b5fe3.jpg"},
+  {ten:"Attack on Titan", theloai:"Hành động", anh:"https://i.pinimg.com/736x/0f/6e/9a/0f6e9a76858c7640c65f86936499864a.jpg"},
   {ten:"Naruto", theloai:"Phiêu lưu", anh:"https://i.ebayimg.com/images/g/V70AAeSwAV9p2k91/s-l1200.jpg"},
-  {ten:"Spy x Family", theloai:"Hài hước", anh:"https://www.japanzon.com/31305-product_hd/spyfamily-vol1-jump-comics.jpg"}
-];
+  {ten:"Spy x Family", theloai:"Hài hước", anh:"https://i.pinimg.com/736x/94/e9/c7/94e9c7634bfbdf892b09d8d5b0172341.jpg"}
+  {ten:"Nichijou", theloai:"Hài hước", anh:"https://i.pinimg.com/1200x/68/c7/ce/68c7ce97c5fa5c9083ca5ae8c25b0d55.jpg"},
+  {ten:"Sakamoto Days", theloai:"Hành động", anh:"https://i.pinimg.com/736x/b4/14/36/b41436c976680dd3ca436b768411b8fd.jpg"},
+  {ten:"Sakamoto Desu ga", theloai:"Hài hước", anh:"https://i.pinimg.com/1200x/56/b2/bd/56b2bd879794e9b6000e2c4159bc79f9.jpg"},
+  {ten:"Sakamoto Desu ga", theloai:"Hài hước", anh:"https://i.pinimg.com/1200x/56/b2/bd/56b2bd879794e9b6000e2c4159bc79f9.jpg"},
+  {ten:"Their Story", theloai:"Hài hước", anh:"https://i.pinimg.com/1200x/b7/a0/9b/b7a09bc00b808220fe5e2013dadad363.jpg"},
+  {ten:"She Is Still Cute Today", theloai:"Hài hước", anh:"https://i.pinimg.com/1200x/22/f2/21/22f2219bcdd7bfe4b07fd53c7d7cadec.jpg"},
+  ];
 
 let daLuu = JSON.parse(localStorage.getItem("lovelyTruyenDaLuu") || "[]");
 let theLoaiDangChon = "Tất cả";
