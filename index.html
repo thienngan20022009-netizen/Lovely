@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lovely - Truyện tranh</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff8fc;color:#35283a;font-family:Arial,sans-serif}
+header{position:sticky;top:0;background:white;padding:16px 7%;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px #0001}
+.logo{font-size:26px;font-weight:bold;color:#c04486;text-decoration:none}
+nav{display:flex;gap:20px}
+nav a{color:#574b5b;text-decoration:none;font-weight:bold}
+button{cursor:pointer}
+.user-btn,.read-btn{background:#c04486;color:white;border:0;border-radius:20px;padding:10px 16px}
+main{max-width:1100px;margin:28px auto;padding:0 20px}
+.banner{background:linear-gradient(120deg,#794279,#d7659a);padding:28px;border-radius:15px;color:white}
+.banner h1{margin:0 0 8px}
+.title{font-size:22px;margin:28px 0 14px}
+.categories{display:flex;gap:9px;flex-wrap:wrap}
+.category{background:white;border:1px solid #edd5e3;border-radius:20px;padding:9px 15px;color:#65445b}
+.category.active,.category:hover{background:#c04486;color:white}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 3px 14px #4d174010}
+.cover{width:100%;height:220px;object-fit:cover;background:#eee}
+.card-info{padding:12px}
+.card h3{font-size:15px;margin:0 0 6px}
+.genre{font-size:12px;color:#907f8d}
+.card-actions{display:flex;gap:7px;margin-top:12px}
+.card-actions button{flex:1;border:0;border-radius:7px;padding:8px}
+.read-btn{border-radius:7px}
+.save-btn{background:#f8e9f1;color:#9d326a}
+.empty{background:white;padding:16px;border-radius:8px;color:#887887}
+footer{text-align:center;background:#4b344b;color:#f6eaf3;padding:22px;line-height:1.8}
+dialog{width:min(380px,92vw);border:0;border-radius:12px;padding:22px}
+dialog::backdrop{background:#0008}
+dialog input{width:100%;padding:11px;margin:7px 0;border:1px solid #ddd;border-radius:6px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:550px){header{padding:14px}.logo{font-size:21px}nav{gap:9px}nav a{font-size:12px}.grid{grid-template-columns:repeat(2,1fr)}.cover{height:190px}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">♡ Lovely</a>
+  <nav>
+    <a href="#home">Trang chính</a>
+    <a href="#categories">Danh mục</a>
+    <a href="#folder">Thư mục</a>
+  </nav>
+  <button class="user-btn" id="userButton">User</button>
+</header>
+
+<main id="home">
+  <section class="banner">
+    <h1>Chào mừng đến với Lovely</h1>
+    <p>Khám phá truyện tranh và lưu những bộ truyện bạn yêu thích.</p>
+  </section>
+
+  <h2 class="title" id="categories">Danh mục</h2>
+  <div class="categories" id="categoryButtons"></div>
+
+  <h2 class="title" id="listTitle">Truyện hot</h2>
+  <div class="grid" id="comicList"></div>
+
+  <h2 class="title" id="folder">Thư mục truyện đã lưu</h2>
+  <div class="grid" id="savedList"></div>
+</main>
+
+<footer>
+  <strong>Trường THPT Nguyễn Trải</strong><br>
+  144, QL22 Trảng Bảng, Tây Ninh<br>
+  Lớp 12A11_Tổ 4
+</footer>
+
+<dialog id="accountDialog">
+  <h2>Tạo tài khoản</h2>
+  <form id="accountForm">
+    <input id="userName" placeholder="Tên của bạn" required>
+    <input id="userEmail" type="email" placeholder="Email" required>
+    <input id="userPassword" type="password" placeholder="Mật khẩu" required>
+    <button class="user-btn">Đăng ký</button>
+    <button type="button" id="closeDialog">Đóng</button>
+  </form>
+</dialog>
+
+<script>
+const truyens = [
+  {ten:"Conan", theloai:"Trinh thám", anh:"https://images.ciatr.jp/2018/05/w_828/nt3bSfYQEsN1l6uND4K0boCkq8GlBbC527EgMy59.jpeg"},
+  {ten:"One Piece", theloai:"Phiêu lưu", anh:"https://mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png"},
+  {ten:"Dragon Ball", theloai:"Hành động", anh:"https://static.animecorner.me/2022/11/dragon-ball-volume-1.jpg"},
+  {ten:"Doraemon", theloai:"Hài hước", anh:"https://manga-mon.com/cdn/shop/files/Doraemon_29Front.jpg?v=1690035228"},
+  {ten:"Kimetsu no Yaiba", theloai:"Hành động", anh:"https://www.japanzon.com/31280-product_hd/kimetsu-no-yaiba-demon-slayer-vol1-jump-comics.jpg"},
+  {ten:"Jujutsu Kaisen", theloai:"Hành động", anh:"https://m.media-amazon.com/images/I/81jxwTCbzTL._SL1500_.jpg"},
+  {ten:"Monster", theloai:"Trinh thám", anh:"https://assets.lastdodo.com/image/ld_large/plain/assets/catalog/assets/2016/5/9/f/e/9/pdf_fe9df3e8-15de-11e6-8627-6d6a4a221e6c.jpg"},
+  {ten:"Attack on Titan", theloai:"Hành động", anh:"https://images-na.ssl-images-amazon.com/images/I/91%2BANRn6gKL.jpg"},
+  {ten:"Naruto", theloai:"Phiêu lưu", anh:"https://i.ebayimg.com/images/g/V70AAeSwAV9p2k91/s-l1200.jpg"},
+  {ten:"Spy x Family", theloai:"Hài hước", anh:"https://www.japanzon.com/31305-product_hd/spyfamily-vol1-jump-comics.jpg"}
+];
+
+let daLuu = JSON.parse(localStorage.getItem("lovelyTruyenDaLuu") || "[]");
+let theLoaiDangChon = "Tất cả";
+
+function hienTruyen() {
+  const danhSach = truyens.filter(t =>
+    theLoaiDangChon === "Tất cả" || t.theloai === theLoaiDangChon
+  );
+
+  document.getElementById("comicList").innerHTML = danhSach.map(t => `
+    <article class="card">
+      <img class="cover" src="${t.anh}" alt="Bìa truyện ${t.ten}">
+      <div class="card-info">
+        <h3>${t.ten}</h3>
+        <span class="genre">${t.theloai}</span>
+        <div class="card-actions">
+          <button class="read-btn" onclick="xemTruyen('${t.ten}')">Xem</button>
+          <button class="save-btn" onclick="luuTruyen('${t.ten}')">
+            ${daLuu.includes(t.ten) ? "Đã lưu" : "Lưu truyện"}
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+
+  const truyenDaLuu = truyens.filter(t => daLuu.includes(t.ten));
+  document.getElementById("savedList").innerHTML = truyenDaLuu.length
+    ? truyenDaLuu.map(t => `
+      <article class="card">
+        <img class="cover" src="${t.anh}" alt="Bìa truyện ${t.ten}">
+        <div class="card-info">
+          <h3>${t.ten}</h3>
+          <span class="genre">${t.theloai}</span>
+          <div class="card-actions">
+            <button class="save-btn" onclick="luuTruyen('${t.ten}')">Bỏ lưu</button>
+          </div>
+        </div>
+      </article>
+    `).join("")
+    : '<p class="empty">Bạn chưa lưu truyện nào.</p>';
+}
+
+function luuTruyen(ten) {
+  daLuu = daLuu.includes(ten)
+    ? daLuu.filter(t => t !== ten)
+    : [...daLuu, ten];
+  localStorage.setItem("lovelyTruyenDaLuu", JSON.stringify(daLuu));
+  hienTruyen();
+}
+
+function xemTruyen(ten) {
+  alert("Bạn đã chọn truyện: " + ten);
+}
+
+const theLoais = ["Tất cả", "Hành động", "Trinh thám", "Phiêu lưu", "Hài hước"];
+document.getElementById("categoryButtons").innerHTML = theLoais.map(t =>
+  `<button class="category ${t === "Tất cả" ? "active" : ""}"
+  onclick="chonTheLoai('${t}', this)">${t}</button>`
+).join("");
+
+function chonTheLoai(theLoai, nut) {
+  theLoaiDangChon = theLoai;
+  document.querySelectorAll(".category").forEach(n => n.classList.remove("active"));
+  nut.classList.add("active");
+  document.getElementById("listTitle").textContent =
+    theLoai === "Tất cả" ? "Truyện hot" : "Truyện " + theLoai;
+  hienTruyen();
+}
+
+document.getElementById("userButton").onclick = () =>
+  document.getElementById("accountDialog").showModal();
+
+document.getElementById("closeDialog").onclick = () =>
+  document.getElementById("accountDialog").close();
+
+document.getElementById("accountForm").onsubmit = function(event) {
+  event.preventDefault();
+  const ten = document.getElementById("userName").value;
+  localStorage.setItem("lovelyUser", ten);
+  document.getElementById("userButton").textContent = ten;
+  document.getElementById("accountDialog").close();
+};
+
+const tenNguoiDung = localStorage.getItem("lovelyUser");
+if (tenNguoiDung) document.getElementById("userButton").textContent = tenNguoiDung;
+
+hienTruyen();
+</script>
+</body>
+</html>
